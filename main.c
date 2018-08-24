@@ -40,11 +40,23 @@ void check(DIGIT** a){                      //OK
     }
 }
 
+int get_size(DIGIT* a){
+    DIGIT* pntr;
+    int count = 0;
+    
+    for(pntr=a; pntr!=NULL; pntr=pntr->NEXT)
+        count++;
+
+    return count;
+}
+
 void print(DIGIT* a){                           //OK
     DIGIT* pntr;
 
+    printf("%d ", get_size(a));
+
     if(a==NULL){
-        printf("It's empty\n");
+        printf("0\n");
         return;
     }
 
@@ -109,16 +121,13 @@ int main(int argc, char const *argv[]){
     int size;
     int aux;
 
-    printf("Digite quantos numeros quer que sejam somados: ");
     scanf("%d", &n);
     numbers=(DIGIT**) calloc(n,sizeof(DIGIT*));
 
     for(aux=0; aux<n; aux++){
-        printf("Digite o tamanho do numero: ");
         scanf("%d", &size);
         getchar();
        
-        printf("Digite o numero: ");
         numb=getchar()-'0';
         numbers[aux]=insert(numb);
         if(numbers[aux]==NULL) return -1;
@@ -140,7 +149,6 @@ int main(int argc, char const *argv[]){
                 while(getchar()!='\n');
         }
         check(&numbers[aux]);
-        print(numbers[aux]);
     }
     total(numbers, n);
     check(&numbers[0]);
