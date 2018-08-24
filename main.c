@@ -40,46 +40,6 @@ void check(DIGIT** a){                      //OK
     }
 }
 
-void sum(DIGIT** result, DIGIT** a){
-    DIGIT* pntr;
-    DIGIT* pntr2;
-    DIGIT* aux;
-    int plus = 0;
-
-    pntr=*result;
-    pntr2=*a;
-
-    while(pntr!=NULL && pntr2!=NULL){
-        if(pntr!=NULL && pntr2!=NULL){
-            pntr->value+=(pntr2->value+plus);
-        }
-        if(pntr==NULL && pntr2!=NULL){
-            pntr=insert(pntr2->value+plus);
-        }
-        if(pntr!=NULL && pntr2==NULL){
-            pntr->value+=plus;
-        }
-
-        if(pntr->value>1){
-            plus = 1;
-            pntr->value-=2;
-        }else{
-            plus = 0;
-        }
-
-        if(pntr!=NULL)
-            pntr=pntr->NEXT;
-        if(pntr2!=NULL){
-            aux=pntr2;
-            pntr2=pntr2->NEXT;
-            free(aux);
-        }
-    }
-    if(plus==1){
-        pntr=insert(1);
-    }
-}
-
 void print(DIGIT* a){                           //OK
     DIGIT* pntr;
 
@@ -93,11 +53,52 @@ void print(DIGIT* a){                           //OK
     printf("\n");
 } 
 
+void sum(DIGIT** result, DIGIT** a){
+    DIGIT* pntr;
+    DIGIT* pntr2;
+    DIGIT* aux;
+    int plus = 0;
+
+    pntr=*result;
+    pntr2=*a;
+
+    while(pntr!=NULL || pntr2!=NULL){
+        if(pntr!=NULL && pntr2!=NULL){
+            pntr->value+=(pntr2->value+plus);
+        }else if(pntr==NULL && pntr2!=NULL){
+            aux->NEXT=insert(pntr2->value+plus);
+        }else if(pntr!=NULL && pntr2==NULL){
+            pntr->value+=plus;
+        }
+
+        if(pntr->value>1){
+            plus = 1;
+            pntr->value-=2;
+        }else{
+            plus = 0;
+        }
+
+        if(pntr2!=NULL){
+            aux=pntr2;
+            pntr2=pntr2->NEXT;
+            free(aux);
+        }
+        aux = pntr;
+
+        if(pntr!=NULL)
+            pntr=pntr->NEXT;
+    }
+    if(plus==1){
+        aux->NEXT=insert(1);
+    }
+    print(*result);
+}
+
 void total(DIGIT** a, int n){
     int aux;
     for(aux = 1; aux<n; aux++){
         sum(&a[0],&a[aux]);
-        printf("%d soma ", aux);
+        printf("Soma fora da função\n");
         print(a[0]);
     }
 }  
@@ -127,11 +128,19 @@ int main(int argc, char const *argv[]){
 
         for(size--; size>0; size--){
             numb=getchar()-'0';
+            
+            if(numb=='\n'-'0')
+                break;
+            
             pntr->NEXT=insert(numb);
+            
             if(numbers[aux]==NULL) return -1;
+            
             pntr=pntr->NEXT;
+            
+            if(size==1)
+                while(getchar()!='\n');
         }
-        while(getchar()!='\n');
         check(&numbers[aux]);
         print(numbers[aux]);
     }
