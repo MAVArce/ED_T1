@@ -67,6 +67,7 @@ void sum(DIGIT** result, DIGIT** a){
             pntr->value+=(pntr2->value+plus);
         }else if(pntr==NULL && pntr2!=NULL){
             aux->NEXT=insert(pntr2->value+plus);
+            pntr=aux->NEXT;
         }else if(pntr!=NULL && pntr2==NULL){
             pntr->value+=plus;
         }
@@ -83,23 +84,20 @@ void sum(DIGIT** result, DIGIT** a){
             pntr2=pntr2->NEXT;
             free(aux);
         }
-        aux = pntr;
-
-        if(pntr!=NULL)
+        if(pntr!=NULL){
+            aux = pntr;
             pntr=pntr->NEXT;
+        }
     }
     if(plus==1){
         aux->NEXT=insert(1);
     }
-    print(*result);
 }
 
 void total(DIGIT** a, int n){
     int aux;
     for(aux = 1; aux<n; aux++){
         sum(&a[0],&a[aux]);
-        printf("Soma fora da função\n");
-        print(a[0]);
     }
 }  
 
