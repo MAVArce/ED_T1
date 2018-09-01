@@ -23,8 +23,8 @@ void check(DIGIT** a){                      //Função para retirar os digitos 0
         }
     }
     if(aux==NULL){                                  //Verificação para caso a lista não tenha nenhum digito 1
+        aux=*a;
         *a=NULL;
-        return;
     }
     if(aux->NEXT!=NULL){                            //Algoritmo para desalocar os 0 no final da lista
         pntr=aux->NEXT;
@@ -109,6 +109,7 @@ int sum(DIGIT** result, DIGIT** a){    //Função que soma a lista dada a lista 
     }
     if(plus==1){                //Caso em que as duas listas chegam ao fim, mas ainda há um "vai um"
         aux->NEXT=insert(1);
+        if(aux->NEXT==NULL) return -1;
     }
     return 0;
 }
